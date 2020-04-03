@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+	<html lang="en">
+	
+
+	<head>
+	  <title>UMD Bus Routes</title>
+	  <link rel="stylesheet" type="text/css" href="./lab_styles.css">
+	</head>
+	
+
+	<body>
+	  <div class="container">
+	    <div class="wrapper">
+	      <div class="header">UMD Bus Routes</div>
+	      <!-- <button class="button" onclick="loadData()">Load Some JSON</button> -->
+	      <button class="button" onclick="showCountryList();">Load Some JSON</button>
+	      <div class="content">
+	        
+	      </div>
+	      <div class="footer"></div>
+	    </div>
+	  </div>
+	  <script>
+	    document.querySelector('.button').addEventListener('click', ()=>{
+            fetch('https://api.umd.io/v0/bus/routes')
+            .then((res)=> res.json())
+            .then(data => {
+                console.log(data);
+                let bustRouteList = document.querySelector('.content'); 
+                let unorderedList = document.createElement('UL');
+                let li = '';
+                data.forEach(element => {
+                    console.log(element.title.includes(element.route_id));
+                    if(element.title.includes(element.route_id)){
+                        let title = `${element.route_id} `;
+                        let newTitle = element.title.replace(title, '');
+                        console.log(newTitle);
+                        li += `<li>${element.route_id} ${newTitle}</li>`;
+                    }
+                });
+            unorderedList.innerHTML = li;
+            console.log(unorderedList)
+            bustRouteList.appendChild(unorderedList);
+        })
+        })
+        document.querySelector('.content').addEventListener('click', (e)=>{
+            console.log(e.target);
+            document.querySelector('.header').innerHTML = e.target.innerHTML;
+        })
+	  </script>
+	</body>
+	
+
+	</html>
